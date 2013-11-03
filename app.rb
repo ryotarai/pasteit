@@ -20,20 +20,34 @@ class Pasteit < Sinatra::Base
   get '/pastes/:name' do
     @paste = Paste.new(params[:name])
     if raw?
-      @paste.files.first.content
+      content_type("text/plain")
+
+      urls = @paste.files.map do |file|
+        url_for("/pastes/#{@paste.name}/#{file.name}", :full)
+      end
+      urls.join("\n") << "\n"
     else
+      @title = @paste.files.first.name
       slim :paste
     end
   end
 
   get '/pastes/:name/:filename' do
+    if raw?
+      return call(env.merge('PATH_INFO' => env['PATH_INFO'] + "/raw"))
+    end
     paste = Paste.new(params[:name])
     @file = paste.file(params[:filename])
-    if raw?
-      @file.content
-    else
-      slim :paste_file
-    end
+    @title = @file.name
+    slim :paste_file
+  end
+
+  get '/pastes/:name/:filename/raw' do
+    content_type("text/plain")
+
+    paste = Paste.new(params[:name])
+    file = paste.file(params[:filename])
+    file.content
   end
 
   post '/pastes' do
@@ -76,7 +90,7 @@ class Pasteit < Sinatra::Base
       end
     end
     def files
-      Dir[File.join(dir, '*')].map do |path|
+      @files ||= Dir[File.join(dir, '*')].map do |path|
         PasteFile.new(self, File.basename(path))
       end
     end

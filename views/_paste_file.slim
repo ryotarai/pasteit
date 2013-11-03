@@ -1,4 +1,7 @@
-a href=url_for("/pastes/#{file.paste.name}/#{file.name}\n", :full)
+a href=url_for("/pastes/#{file.paste.name}/#{file.name}", :full)
   h2 = file.name
 == file.code_div
+a href=url_for("/pastes/#{file.paste.name}/#{file.name}/raw", :full)
+  | Raw
+hr
 
