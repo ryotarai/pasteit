@@ -6,7 +6,7 @@ html lang="en"
     meta content="width=(device-width,)initial-scale=1.0" name="viewport"
     meta content="" name="description"
     meta content="" name="author"
-    title Pasteit
+    title ="Pasteit - #{@title || ''}"
     link href="#{url_for "/"}css/bootstrap.css" rel="stylesheet"
   body
     /! Static navbar
@@ -15,7 +15,9 @@ html lang="en"
         .navbar-header
           a.navbar-brand href="/" Pasteit
         .navbar-collapse.collapse
-          ul.nav.navbar-nav
+          ul.nav.navbar-nav.navbar-right
+           li
+             a href="https://github.com/ryotarai/pasteit" Fork me on GitHub
     .container
       == yield
     /! /container
