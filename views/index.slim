@@ -1,2 +1,20 @@
+h3 How to Create Paste
 pre
-  | curl -F 'app.rb=@app.rb' -F 'README.md=@README.md' -XPOST #{url_for "/", :full}
+  | # From File<br>
+  | curl -F 'app.rb=@app.rb' -F 'README.md=@README.md' -XPOST #{url_for "/", :full}<br>
+  | <br>
+  | # From Stdin<br>
+  | cat foo.txt | curl -F '-=@-' -XPOST #{url_for "/", :full}<br>
+  | <br>
+  | # From Clipboard (on OSX)<br>
+  | pbpaste | curl -F '-=@-' -XPOST #{url_for "/", :full}<br>
+  | <br>
+  | # pasteit command<br>
+  | pasteit () {<br>
+  |     ARGS=()<br>
+  |     for ARG in "$@"; do<br>
+  |         ARGS+=("-F" "$ARG=@$ARG")<br>
+  |     done<br>
+  |     curl $ARGS -XPOST #{url_for "/", :full}<br>
+  | }<br>
+  | pasteit foo.txt bar.txt
