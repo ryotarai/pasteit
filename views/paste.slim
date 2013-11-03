@@ -1,11 +1,2 @@
-doctype html
-html
-  head
-    title Pasteit
-    css:
-      pre {
-        font-family: Consolas, "Liberation Mono", Courier, monospace;
-      }
-  body
-    - @paste.files.each do |file|
-      == slim :_paste_file, locals: {file: file}
+- @paste.files.each do |file|
+  == slim :_paste_file, locals: {file: file}

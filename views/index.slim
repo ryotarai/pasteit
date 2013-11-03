@@ -1,1 +1,2 @@
-h1 Pasteit
+pre
+  | curl -F 'app.rb=@app.rb' -F 'README.md=@README.md' -XPOST #{url_for "/", :full}

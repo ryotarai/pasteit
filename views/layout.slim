@@ -1,0 +1,28 @@
+doctype
+html lang="en"
+  head
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="width=(device-width,)initial-scale=1.0" name="viewport"
+    meta content="" name="description"
+    meta content="" name="author"
+    title Pasteit
+    link href="#{url_for "/"}css/bootstrap.css" rel="stylesheet"
+  body
+    /! Static navbar
+    .navbar.navbar-default.navbar-static-top
+      .container
+        .navbar-header
+          a.navbar-brand href="/" Pasteit
+        .navbar-collapse.collapse
+          ul.nav.navbar-nav
+    .container
+      == yield
+    /! /container
+    /!
+      | Bootstrap core JavaScript
+      | \==================================================
+    /! Placed at the end of the document so the pages load faster
+    script src="https://code.jquery.com/jquery-1.10.2.min.js"
+    script src="#{url_for "/"}js/bootstrap.min.js"
+

@@ -7,6 +7,8 @@ require 'linguist'
 class Pasteit < Sinatra::Base
   helpers Sinatra::UrlForHelper
 
+  set :public_folder, File.dirname(__FILE__) + '/public'
+
   get '/' do
     slim :index
   end
@@ -40,7 +42,7 @@ class Pasteit < Sinatra::Base
       tempfile = param[:tempfile]
       paste.add_file(filename, tempfile)
     end
-    url_for "/pastes/#{paste.name}\n", :full
+    url_for("/pastes/#{paste.name}", :full) + "\n"
   end
 
   private
