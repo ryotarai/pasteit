@@ -2,19 +2,24 @@ h3 How to Create Paste
 pre
   | # From File<br>
   | curl -F 'app.rb=@app.rb' -F 'README.md=@README.md' -XPOST #{url_for "/", :full}<br>
-  | <br>
+pre
   | # From Stdin<br>
   | cat foo.txt | curl -F '-=@-' -XPOST #{url_for "/", :full}<br>
-  | <br>
+pre
   | # From Clipboard (on OSX)<br>
   | pbpaste | curl -F '-=@-' -XPOST #{url_for "/", :full}<br>
-  | <br>
+pre
   | # pasteit command<br>
   | pasteit () {<br>
-  |     ARGS=()<br>
-  |     for ARG in "$@"; do<br>
-  |         ARGS+=("-F" "$ARG=@$ARG")<br>
-  |     done<br>
-  |     curl $ARGS -XPOST #{url_for "/", :full}<br>
+  |     ENDPOINT="#{url_for "/", :full}"<br>
+  |     if [ $# -eq 0 ]; then<br>
+  |         curl -F "-=@-" -XPOST $ENDPOINT<br>
+  |     else<br>
+  |         ARGS=()<br>
+  |         for ARG in "$@"; do<br>
+  |             ARGS+=("-F" "$ARG=@$ARG")<br>
+  |         done<br>
+  |         curl $ARGS -XPOST $ENDPOINT<br>
+  |     fi<br>
   | }<br>
-  | pasteit foo.txt bar.txt
+  | pasteit foo.txt bar.txt<br>

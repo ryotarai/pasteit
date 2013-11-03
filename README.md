@@ -19,16 +19,40 @@ Puma 1.6.3 starting...
 * Listening on tcp://0.0.0.0:9292
 ```
 
-Post foo.txt
+### Paste from File
 
 ```
-$ curl -F 'foo.txt=@foo.txt' -XPOST http://localhost:9292
-http://localhost:9292/pastes/1234567890abcdef
+curl -F 'app.rb=@app.rb' -F 'README.md=@README.md' -XPOST http://localhost:9292/
 ```
 
-Post data from stdin
+### Paste from Stdin
+```
+cat foo.txt | curl -F '-=@-' -XPOST http://localhost:9292/
+```
+
+### Paste from Clipboard (on OSX)
+```
+pbpaste | curl -F '-=@-' -XPOST http://localhost:9292/
+```
+
+### Paste with pasteit command
+```
+pasteit () {
+    ENDPOINT="http://localhost:9292"
+    if [ $# -eq 0 ]; then
+        curl -F "-=@-" -XPOST $ENDPOINT
+    else
+        ARGS=()
+        for ARG in "$@"; do
+            ARGS+=("-F" "$ARG=@$ARG")
+        done
+        curl $ARGS -XPOST $ENDPOINT
+    fi
+}
+```
 
 ```
-$ echo "Hello, Pasteit" | curl -F '-=@-' -XPOST http://localhost:9292
-http://localhost:9292/pastes/1234567890abcdef
+pasteit foo.txt bar.txt
+cat foo.txt | pasteit
 ```
+
